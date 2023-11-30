@@ -2,10 +2,18 @@ from __future__ import print_function
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.NanoAOD.common_cff import *
 from PhysicsTools.NanoAOD.globals_cff import *
-from PhysicsTools.NanoAOD.nano_cff import *
+#from PhysicsTools.NanoAOD.nano_cff import *
+from PhysicsTools.NanoAOD.genWeightsTable_cfi import *
 from PhysicsTools.NanoAOD.vertices_cff import *
 from PhysicsTools.NanoAOD.NanoAODEDMEventContent_cff import *
 from PhysicsTools.BParkingNano.trgbits_cff import *
+from PhysicsTools.NanoAOD.taus_cff import *
+from PhysicsTools.NanoAOD.boostedTaus_cff import *
+#from PhysicsTools.NanoAOD.jetsAK4_CHS_cff import *
+from PhysicsTools.NanoAOD.jets_cff import *
+#from PhysicsTools.NanoAOD.jetsAK4_Puppi_cff import *
+#from PhysicsTools.NanoAOD.jetMC_cff import *
+from PhysicsTools.NanoAOD.muons_cff import *
 
 ##for gen and trigger muon
 from PhysicsTools.BParkingNano.genparticlesBPark_cff import *
@@ -21,15 +29,35 @@ from PhysicsTools.BParkingNano.tracksBPark_cff import *
 from PhysicsTools.BParkingNano.BToKLL_cff import *
 from PhysicsTools.BParkingNano.BToKstarLL_cff import *
 
+nanoMetadata = cms.EDProducer("UniqueStringProducer",
+    strings = cms.PSet(
+        tag = cms.string("untagged"),
+    )
+)
+linkedObjectsNew = cms.EDProducer("PATObjectCrossLinker",
+   jets=cms.InputTag("finalJets"),
+   muons=cms.InputTag("muonTrgSelector:SelectedMuons"),
+   electrons=cms.InputTag("slimmedElectrons"),
+   lowPtElectrons=cms.InputTag(""),
+   taus=cms.InputTag("slimmedTaus"),
+   boostedTaus=cms.InputTag(""),
+   photons=cms.InputTag("slimmedPhotons"),
+   vertices=cms.InputTag("slimmedSecondaryVertices")
+)
 
 nanoSequenceOnlyFullSim = cms.Sequence(triggerObjectBParkTables + l1bits)
 
-nanoSequence = cms.Sequence(nanoMetadata + 
-                            cms.Sequence(vertexTask) +
-                            cms.Sequence(globalTablesTask) + cms.Sequence(vertexTablesTask) +
-                            triggerObjectBParkTables + l1bits)
+nanoSequenceCommon = cms.Sequence(nanoMetadata +
+                                 muonBParkSequence + cms.Sequence(tauTask) +
+                                 jetSequence +                                          # dont know how to handle the muonsubptraw missing
+                                 #cms.Sequence(jetTask) +
+                                 linkedObjectsNew +
+                                 jetTables+
+                            cms.Sequence(vertexTask) + 
+                            cms.Sequence(globalTablesTask) + cms.Sequence(vertexTablesTask))
+nanoSequence = cms.Sequence(nanoSequenceCommon + nanoSequenceOnlyFullSim)
 
-nanoSequenceMC = cms.Sequence(particleLevelBParkSequence + genParticleBParkSequence + 
+nanoSequenceMC = cms.Sequence(particleLevelBParkSequence + genParticleBParkSequence + nanoSequenceCommon + jetMC +
                               cms.Sequence(globalTablesMCTask) + cms.Sequence(genWeightsTableTask) + genParticleBParkTables + lheInfoTable)
 
 from PhysicsTools.BParkingNano.electronsTrigger_cff import *
@@ -51,8 +79,8 @@ def nanoAOD_customizeTrackFilteredBPark(process):
     return process
 
 def nanoAOD_customizeElectronFilteredBPark(process):
-    process.nanoBKeeSequence     = cms.Sequence( electronsBParkSequence + electronBParkTables)
-    process.nanoBKstarEESequence = cms.Sequence( electronsBParkSequence + electronBParkTables)
+    #process.nanoBKeeSequence     = cms.Sequence( electronsBParkSequence + electronBParkTables)
+    #process.nanoBKstarEESequence = cms.Sequence( electronsBParkSequence + electronBParkTables)
     return process
 
 def nanoAOD_customizeTriggerBitsBPark(process):
@@ -60,21 +88,21 @@ def nanoAOD_customizeTriggerBitsBPark(process):
     return process
 
 def nanoAOD_customizeBToKLL(process):
-    process.nanoBKeeSequence   = cms.Sequence( process.nanoBKeeSequence + BToKEESequence    + BToKeeTable   )
-    process.nanoBKMuMuSequence = cms.Sequence( BToKMuMuSequence + BToKmumuTable )
+    #process.nanoBKeeSequence   = cms.Sequence( process.nanoBKeeSequence + BToKEESequence    + BToKeeTable   )
+    #process.nanoBKMuMuSequence = cms.Sequence( BToKMuMuSequence + BToKmumuTable )
     return process
 
 #three possibilities for K*LL
 def nanoAOD_customizeBToKstarLL(process):
-    process.nanoBKstarLLSequence   = cms.Sequence( KstarToKPiSequence + BToKstarLLSequence + KstarToKPiTable + BToKstarLLTables )
+    #process.nanoBKstarLLSequence   = cms.Sequence( KstarToKPiSequence + BToKstarLLSequence + KstarToKPiTable + BToKstarLLTables )
     return process
 
 def nanoAOD_customizeBToKstarEE(process):
-    process.nanoBKstarEESequence   = cms.Sequence( process.nanoBKstarEESequence + BToKstarEESequence + BToKstarEETable + KstarToKPiTable )
+    #process.nanoBKstarEESequence   = cms.Sequence( process.nanoBKstarEESequence + BToKstarEESequence + BToKstarEETable + KstarToKPiTable )
     return process
 
 def nanoAOD_customizeBToKstarMuMu(process):
-    process.nanoBKstarMuMuSequence = cms.Sequence( BToKstarMuMuSequence + BToKstarMuMuTable + KstarToKPiTable )
+    #process.nanoBKstarMuMuSequence = cms.Sequence( BToKstarMuMuSequence + BToKstarMuMuTable + KstarToKPiTable )
     return process
 
 from FWCore.ParameterSet.MassReplace import massSearchReplaceAnyInputTag

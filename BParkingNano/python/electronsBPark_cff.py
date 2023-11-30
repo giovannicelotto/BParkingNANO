@@ -40,7 +40,7 @@ electronsForAnalysis = cms.EDProducer(
   useRegressionModeForP4 = cms.bool(False),
   useGsfModeForP4 = cms.bool(False),
   sortOutputCollections = cms.bool(True),
-  saveLowPtE = cms.bool(True),
+  saveLowPtE = cms.bool(False),
   filterEle = cms.bool(True),
     # conversions
     conversions = cms.InputTag('gsfTracksOpenConversions:gsfTracksOpenConversions'),

@@ -1,9 +1,8 @@
 from FWCore.ParameterSet.VarParsing import VarParsing
 import FWCore.ParameterSet.Config as cms
-
 options = VarParsing('python')
 
-options.register('isMC', False,
+options.register('isMC', True,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
     "Run this on real data"
@@ -33,13 +32,13 @@ options.register('skip', 0,
     VarParsing.varType.int,
     "skip first N events"
 )
-options.register('lhcRun', 3,
+options.register('lhcRun', 2,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
     "LHC Run 2 or 3 (default)"
 )
 
-options.setDefault('maxEvents', 1000)
+options.setDefault('maxEvents', 20000)
 options.setDefault('tag', '124X')
 options.parseArguments()
 print(options)
@@ -51,7 +50,7 @@ if options._beenSet['globalTag']: globaltag = options.globalTag
 
 ext1 = {2:'Run2', 3:'Run3'}
 ext2 = {False:'data', True:'mc'}
-outputFileNANO = cms.untracked.string('_'.join(['BParkingNANO',
+outputFileNANO = cms.untracked.string('_'.join(['Hbb_noTrig',
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag])+'.root')
@@ -62,9 +61,35 @@ outputFileFEVT = cms.untracked.string('_'.join(['BParkingFullEvt',
 if not options.inputFiles:
     if options.lhcRun == 2:
         options.inputFiles = [
-            'file:///eos/cms/store/cmst3/group/bpark/BToKmumu_1000Events_MINIAOD.root'
-        ] if options.isMC else [
-            'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH4/MINIAOD/05May2019-v2/230000/6B5A24B1-0E6E-504B-8331-BD899EB60110.root'
+'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/01799CFD-BA2E-844B-87CB-273185CF1A4A.root',
+'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/90000/CFBFCA29-1649-2345-970E-731824064446.root',
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/2EA135EF-43C9-624B-A50B-B72B2E2D5393.root', 
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/A386A139-01EC-3C4C-AB48-F2FC8814FDF2.root', 
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/23EBA0E0-6729-7C41-9888-F8E07B20C677.root', 
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/5A00A84C-ED50-B94B-A25D-EE2A6EAD3D4C.root', 
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/7010DF71-3814-3047-8786-3A3A894D0E02.root', 
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/F338472B-D37A-8040-B482-111D21820AD7.root', 
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/DE59C01E-2184-334D-A77A-6D5B18697B02.root', 
+#'/store/mc/RunIIAutumn18MiniAOD/GluGluHToBB_M125_13TeV_powheg_pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/F7C64AA3-BA68-0F4D-B845-D59C363DF441.root', 
+#'/store/mc/RunIISummer20UL18MiniAODv2/QCD_HT200to300_BGenFilter_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/270000/36E1C10A-F287-A74E-B874-6C359FACD755.root'
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/2C416EBB-5DEE-E811-B2B4-D48564592B02.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/14A607B2-5DEE-E811-B6B1-509A4C74D08F.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/3A86E8AC-5DEE-E811-8B2F-002590907826.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/988407DC-5DEE-E811-A28C-A4BF0101DB93.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/C074AF04-2BED-E811-B7D8-0CC47AFCC6A6.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/1A79E2C6-5DEE-E811-8692-0025905C3D6C.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/F4947FA5-25EC-E811-BE29-90B11C0DCA4B.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/D2946C2A-35EC-E811-94D2-002590E3A224.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/5A82EFA7-3CEC-E811-876D-0CC47AD98B8E.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/E0B52B60-48EC-E811-8B72-0CC47AD98D6E.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/90F5498C-59EC-E811-B2D1-1C6A7A26BCDB.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/54CA8ECF-4BED-E811-AD93-002590E39D52.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/1876BAD5-5DEE-E811-BE0C-0CC47AD9908C.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/28FEBABF-3CEC-E811-90CF-002590D9D8AE.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/E8F803A0-80EC-E811-98D3-0CC47AB0B704.root',
+#'/store/mc/RunIIFall17MiniAODv2/DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/110000/7C54C8B8-B7ED-E811-804F-002590FD5A72.root'
+] if options.isMC else [
+        '/store/data/Run2018A/ParkingBPH1/MINIAOD/UL2018_MiniAODv2-v1/2430000/004BEEAD-CCCD-4A4F-9217-91A5A28EA0C8.root'
         ]
     elif options.lhcRun == 3:
         options.inputFiles = [
@@ -124,8 +149,9 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     fileName = outputFileFEVT,
-    outputCommands = (cms.untracked.vstring('keep *',
-                                            'drop *_*_SelectedTransient*_*',
+    outputCommands = (cms.untracked.vstring(
+        'keep *',
+        'drop *_*_SelectedTransient*_*',
                      )),
     splitLevel = cms.untracked.int32(0)
 )
@@ -140,7 +166,7 @@ process.NANOAODoutput = cms.OutputModule("NanoAODOutputModule",
     fileName = outputFileNANO,
     outputCommands = cms.untracked.vstring(
       'drop *',
-      "keep nanoaodFlatTable_*Table_*_*",     # event data
+      "keep nanoaodFlatTable_*Table*_*_*",     # event data
       "keep nanoaodUniqueString_nanoMetadata_*_*",   # basic metadata
     )
 
@@ -158,9 +184,9 @@ if options.lhcRun == 2:
     process = nanoAOD_customizeMuonTriggerBPark(process)
     process = nanoAOD_customizeElectronFilteredBPark(process)
     process = nanoAOD_customizeTrackFilteredBPark(process)
-    process = nanoAOD_customizeBToKLL(process)
-    process = nanoAOD_customizeBToKstarEE(process)
-    process = nanoAOD_customizeBToKstarMuMu(process)
+    #process = nanoAOD_customizeBToKLL(process)
+    #process = nanoAOD_customizeBToKstarEE(process)
+    #process = nanoAOD_customizeBToKstarMuMu(process)
 elif options.lhcRun == 3:
     from PhysicsTools.BParkingNano.electronsTrigger_cff import *
     process = nanoAOD_customizeDiEle(process)
@@ -171,16 +197,18 @@ elif options.lhcRun == 3:
 
 # Path and EndPath definitions
 if options.lhcRun == 2:
-    process.nanoAOD_KMuMu_step = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.nanoBKMuMuSequence + CountBToKmumu )
-    process.nanoAOD_Kee_step   = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.nanoBKeeSequence   + CountBToKee   )
-    process.nanoAOD_KstarMuMu_step = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.KstarToKPiSequence + process.nanoBKstarMuMuSequence + CountBToKstarMuMu )
-    process.nanoAOD_KstarEE_step  = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.KstarToKPiSequence + process.nanoBKstarEESequence + CountBToKstarEE  )
+    process.nanoAOD_Jets_step = cms.Path(process.nanoSequence)
+    #process.nanoAOD_KMuMu_step = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.nanoBKMuMuSequence + CountBToKmumu )
+    #process.nanoAOD_Kee_step   = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.nanoBKeeSequence   + CountBToKee   )
+    #process.nanoAOD_KstarMuMu_step = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.KstarToKPiSequence + process.nanoBKstarMuMuSequence + CountBToKstarMuMu )
+    #process.nanoAOD_KstarEE_step  = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.KstarToKPiSequence + process.nanoBKstarEESequence + CountBToKstarEE  )
 elif options.lhcRun == 3:
     process.nanoAOD_DiEle_step = cms.Path(process.nanoSequence
-                                          +process.nanoDiEleSequence
-                                          +process.nanoTracksSequence
-                                          +process.nanoBKeeSequence
-                                          +CountBToKee)
+                                          #+process.nanoDiEleSequence
+                                          #+process.nanoTracksSequence
+                                          #+process.nanoBKeeSequence
+                                          #+CountBToKee
+                                          )
 
 # customisation of the process.
 if options.isMC:
@@ -211,8 +239,8 @@ if options.lhcRun == 3:
 elif options.lhcRun == 2:
 
     process.schedule = cms.Schedule(
-        process.nanoAOD_KMuMu_step,
-        process.nanoAOD_Kee_step,
+        process.nanoAOD_Jets_step,
+        #process.nanoAOD_Kee_step,
         #process.nanoAOD_KstarMuMu_step,
         #process.nanoAOD_KstarEE_step,
         process.endjob_step,
@@ -221,7 +249,7 @@ elif options.lhcRun == 2:
     if options.wantFullRECO:
         process.schedule = cms.Schedule(
             process.nanoAOD_KMuMu_step,
-            process.nanoAOD_Kee_step,
+            #process.nanoAOD_Kee_step,
             #process.nanoAOD_KstarMuMu_step,
             #process.nanoAOD_KstarEE_step,
             process.endjob_step,
@@ -232,8 +260,8 @@ elif options.lhcRun == 2:
     associatePatAlgosToolsTask(process)
     process.NANOAODoutput.SelectEvents = cms.untracked.PSet(
         SelectEvents = cms.vstring(
-            'nanoAOD_KMuMu_step',
-            'nanoAOD_Kee_step',
+            'nanoAOD_Jets_step',
+            #'nanoAOD_Kee_step',
             #'nanoAOD_KstarMuMu_step',
             #'nanoAOD_KstarEE_step',
         )
