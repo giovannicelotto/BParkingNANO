@@ -135,7 +135,7 @@ muonTriggerMatchedTable = muonBParkTable.clone(
 )
 
 
-muonBParkSequence = cms.Sequence(muonTrgSelector )#* countTrgMuons)
+muonBParkSequence = cms.Sequence(muonTrgSelector * countTrgMuons)
 muonBParkMC = cms.Sequence(muonBParkSequence + muonsBParkMCMatchForTable + selectedMuonsMCMatchEmbedded + muonBParkMCTable)
 muonBParkTables = cms.Sequence(muonBParkTable)
 muonTriggerMatchedTables = cms.Sequence(muonTriggerMatchedTable)   ####
