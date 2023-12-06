@@ -10,7 +10,8 @@ finalGenParticlesBPark = finalGenParticles.clone(
   src = cms.InputTag("mergedGenParticles"),
   select = cms.vstring(
 	"drop *",
-        "++keep++ (abs(pdgId) == 511 || abs(pdgId) == 521)",  #keep all B0(=511) and B+/-(521) + their daughters and granddaughters
+        "++keep++ (abs(pdgId) == 25)",  # "++keep++ (abs(pdgId) == 511 || abs(pdgId) == 521)", keep all B0(=511) and B+/-(521) + their daughters and granddaughters
+        "++keep++ (abs(pdgId) == 23)",
    )
 )
 
