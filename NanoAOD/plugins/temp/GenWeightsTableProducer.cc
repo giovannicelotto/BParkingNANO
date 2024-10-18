@@ -14,6 +14,7 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "boost/algorithm/string.hpp"
 
+#include <array>
 #include <memory>
 
 #include <vector>
@@ -173,6 +174,9 @@ namespace {
     std::string rwgtWeightDoc;
   };
 
+  constexpr std::array<unsigned int, 4> defPSWeightIDs = {{6, 7, 8, 9}};
+  constexpr std::array<unsigned int, 4> defPSWeightIDs_alt = {{27, 5, 26, 4}};
+
   struct DynamicWeightChoiceGenInfo {
     // choice of LHE weights
     // ---- scale ----
@@ -182,8 +186,6 @@ namespace {
     std::vector<unsigned int> pdfWeightIDs;
     std::string pdfWeightsDoc;
     // ---- ps ----
-    std::vector<unsigned int> defPSWeightIDs = {6, 7, 8, 9};
-    std::vector<unsigned int> defPSWeightIDs_alt = {27, 5, 26, 4};
     bool matchPS_alt = false;
     std::vector<unsigned int> psWeightIDs;
     unsigned int psBaselineID = 1;
@@ -196,11 +198,7 @@ namespace {
 
   struct LumiCacheInfoHolder {
     CounterMap countermap;
-    DynamicWeightChoiceGenInfo weightChoice;
-    void clear() {
-      countermap.clear();
-      weightChoice = DynamicWeightChoiceGenInfo();
-    }
+    void clear() { countermap.clear(); }
   };
 
   float stof_fortrancomp(const std::string& str) {
@@ -246,6 +244,7 @@ namespace {
 
 class GenWeightsTableProducer : public edm::global::EDProducer<edm::StreamCache<LumiCacheInfoHolder>,
                                                                edm::RunCache<DynamicWeightChoice>,
+                                                               edm::LuminosityBlockCache<DynamicWeightChoiceGenInfo>,
                                                                edm::RunSummaryCache<CounterMap>,
                                                                edm::EndRunProducer> {
 public:
@@ -321,7 +320,7 @@ public:
       }
     }
 
-    const auto genWeightChoice = &(streamCache(id)->weightChoice);
+    const auto genWeightChoice = luminosityBlockCache(iEvent.getLuminosityBlock().index());
     if (lheInfo.isValid()) {
       if (getLHEweightsFromGenInfo && !hasIssuedWarning_.exchange(true))
         edm::LogWarning("LHETablesProducer")
@@ -550,12 +549,12 @@ public:
 
     // getByToken throws since we're not in the endRun (see https://github.com/cms-sw/cmssw/pull/18499)
     //if (iRun.getByToken(lheRunTag_, lheInfo)) {
-    //for (const auto& lheLabel : lheLabel_) {
-    //  iRun.getByLabel(lheLabel, lheInfo);
-    //  if (lheInfo.isValid()) {
-    //    break;
-    //  }
-    //}
+    for (const auto& lheLabel : lheLabel_) {
+      iRun.getByLabel(lheLabel, lheInfo);
+      if (lheInfo.isValid()) {
+        break;
+      }
+    }
     if (lheInfo.isValid()) {
       std::vector<ScaleVarWeight> scaleVariationIDs;
       std::vector<PDFSetWeights> pdfSetWeightIDs;
@@ -941,26 +940,19 @@ public:
   void streamBeginRun(edm::StreamID id, edm::Run const&, edm::EventSetup const&) const override {
     streamCache(id)->clear();
   }
-  void streamBeginLuminosityBlock(edm::StreamID id,
-                                  edm::LuminosityBlock const& lumiBlock,
-                                  edm::EventSetup const& eventSetup) const override {
-    auto counterMap = &(streamCache(id)->countermap);
+
+  std::shared_ptr<DynamicWeightChoiceGenInfo> globalBeginLuminosityBlock(edm::LuminosityBlock const& lumiBlock,
+                                                                         edm::EventSetup const&) const override {
+    auto dynamicWeightChoiceGenInfo = std::make_shared<DynamicWeightChoiceGenInfo>();
+
     edm::Handle<GenLumiInfoHeader> genLumiInfoHead;
     lumiBlock.getByToken(genLumiInfoHeadTag_, genLumiInfoHead);
     if (!genLumiInfoHead.isValid())
       edm::LogWarning("LHETablesProducer")
           << "No GenLumiInfoHeader product found, will not fill generator model string.\n";
 
-    std::string label;
     if (genLumiInfoHead.isValid()) {
-      label = genLumiInfoHead->configDescription();
-      boost::replace_all(label, "-", "_");
-      boost::replace_all(label, "/", "_");
-    }
-    counterMap->setLabel(label);
-
-    if (genLumiInfoHead.isValid()) {
-      auto weightChoice = &(streamCache(id)->weightChoice);
+      auto weightChoice = dynamicWeightChoiceGenInfo.get();
 
       std::vector<ScaleVarWeight> scaleVariationIDs;
       std::vector<PDFSetWeights> pdfSetWeightIDs;
@@ -1066,6 +1058,25 @@ public:
           break;
       }
     }
+    return dynamicWeightChoiceGenInfo;
+  }
+
+  void globalEndLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) const override {}
+
+  void streamBeginLuminosityBlock(edm::StreamID id,
+                                  edm::LuminosityBlock const& lumiBlock,
+                                  edm::EventSetup const&) const override {
+    auto counterMap = &(streamCache(id)->countermap);
+    edm::Handle<GenLumiInfoHeader> genLumiInfoHead;
+    lumiBlock.getByToken(genLumiInfoHeadTag_, genLumiInfoHead);
+
+    std::string label;
+    if (genLumiInfoHead.isValid()) {
+      label = genLumiInfoHead->configDescription();
+      boost::replace_all(label, "-", "_");
+      boost::replace_all(label, "/", "_");
+    }
+    counterMap->setLabel(label);
   }
   // create an empty counter
   std::shared_ptr<CounterMap> globalBeginRunSummary(edm::Run const&, edm::EventSetup const&) const override {
@@ -1082,12 +1093,10 @@ public:
   void globalEndRunSummary(edm::Run const&, edm::EventSetup const&, CounterMap* runCounterMap) const override {}
   // write the total to the run
   void globalEndRunProduce(edm::Run& iRun, edm::EventSetup const&, CounterMap const* runCounterMap) const override {
-    //std::cout<<"\n\n\n***Here is my code***\n\n\n"<<std::endl;
     auto out = std::make_unique<nanoaod::MergeableCounterTable>();
-    //std::cout<<runCounterMap->countermap<<std::endl;
+
     for (const auto& x : runCounterMap->countermap) {
       auto runCounter = &(x.second);
-      std::cout<<"SumW "<<runCounter->sumw<<std::endl;
       std::string label = (!x.first.empty()) ? (std::string("_") + x.first) : "";
       std::string doclabel = (!x.first.empty()) ? (std::string(", for model label ") + x.first) : "";
 
@@ -1137,7 +1146,6 @@ public:
       }
     }
     iRun.put(std::move(out));
-    //std::cout<<"\n\n\n**iRun.put(std::move(out));***\n\n\n"<<std::endl;
   }
   // nothing to do here
   void globalEndRun(edm::Run const&, edm::EventSetup const&) const override {}

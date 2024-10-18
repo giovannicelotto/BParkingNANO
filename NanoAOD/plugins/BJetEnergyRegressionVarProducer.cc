@@ -95,6 +95,12 @@ public:
     produces<edm::ValueMap<int>>("vtxNtrk");
     produces<edm::ValueMap<float>>("ptD");
     produces<edm::ValueMap<float>>("genPtwNu");
+    //produces<edm::ValueMap<float>>("chargeUnweighted");
+    //produces<edm::ValueMap<float>>("chargeK1");
+    //produces<edm::ValueMap<float>>("chargeKp3");
+    //produces<edm::ValueMap<float>>("chargeKp1");
+    //produces<edm::ValueMap<float>>("chargeKp5");
+    //produces<edm::ValueMap<float>>("chargeKp7");
   }
   ~BJetEnergyRegressionVarProducer() override{};
 
@@ -161,6 +167,12 @@ void BJetEnergyRegressionVarProducer<T>::produce(edm::StreamID streamID,
   std::vector<int> vtxNtrk(nJet, 0);
   std::vector<float> ptD(nJet, 0);
   std::vector<float> genPtwNu(nJet, 0);
+  //std::vector<float> chargeUnweighted(nJet, 0.);
+  //std::vector<float> chargeK1(nJet, 0.);
+  //std::vector<float> chargeKp1(nJet, 0.);
+  //std::vector<float> chargeKp3(nJet, 0.);
+  //std::vector<float> chargeKp5(nJet, 0.);
+  //std::vector<float> chargeKp7(nJet, 0.);
 
   const auto& pv = (*srcVtx)[0];
   for (unsigned int ij = 0; ij < nJet; ij++) {
@@ -198,8 +210,21 @@ void BJetEnergyRegressionVarProducer<T>::produce(edm::StreamID streamID,
     //lepton properties
     float maxLepPt = 0;
     leptonPtRel[ij] = 0;
-
+    //float jetChargeUnweighted = 0;
+    //float jetChargeK1  = 0;
+    //float jetChargeKp1 = 0;
+    //float jetChargeKp3 = 0;
+    //float jetChargeKp5 = 0;
+    //float jetChargeKp7 = 0;
     for (const auto& d : jet->daughterPtrVector()) {
+      //if (d->pt()>1){
+      //jetChargeUnweighted = jetChargeUnweighted + d->charge();
+      //jetChargeK1 = jetChargeK1 + d->pt()*(d->charge()*1.);
+      //jetChargeKp1 = jetChargeKp1 + pow(d->pt(), .1)*(d->charge()*1.);
+      //jetChargeKp3 = jetChargeKp3 + pow(d->pt(), .3)*(d->charge()*1.);
+      //jetChargeKp5 = jetChargeKp5 + pow(d->pt(), .5)*(d->charge()*1.);
+      //jetChargeKp7 = jetChargeKp7 + pow(d->pt(), .7)*(d->charge()*1.);
+      //}
       if (abs(d->pdgId()) == 11 || abs(d->pdgId()) == 13) {
         if (d->pt() < maxLepPt)
           continue;
@@ -217,6 +242,18 @@ void BJetEnergyRegressionVarProducer<T>::produce(edm::StreamID streamID,
         maxLepPt = d->pt();
       }
     }
+    //jetChargeK1 = jetChargeK1*1. /sumPt;
+    //jetChargeKp1 = jetChargeKp1/pow(sumPt, .1);
+    //jetChargeKp3 = jetChargeKp3/pow(sumPt, .3);
+    //jetChargeKp5 = jetChargeKp5/pow(sumPt, .5);
+    //jetChargeKp7 = jetChargeKp7/pow(sumPt, .7);
+    //chargeUnweighted[ij]=jetChargeUnweighted;
+    //chargeK1[ij]=jetChargeK1;
+    //chargeKp1[ij]=jetChargeKp1;
+    //chargeKp3[ij]=jetChargeKp3;
+    //chargeKp5[ij]=jetChargeKp5;
+    //chargeKp7[ij]=jetChargeKp7;
+    
 
     //Fill vertex properties
     VertexDistance3D vdist;
@@ -251,6 +288,43 @@ void BJetEnergyRegressionVarProducer<T>::produce(edm::StreamID streamID,
   fillerRel.insert(srcJet, leptonPtRel.begin(), leptonPtRel.end());
   fillerRel.fill();
   iEvent.put(std::move(leptonPtRelV), "leptonPtRel");
+
+  //std::unique_ptr<edm::ValueMap<float>> chargeUnweightedV(new edm::ValueMap<float>());
+  //edm::ValueMap<float>::Filler fillerChargeUnweighted(*chargeUnweightedV);
+  //fillerChargeUnweighted.insert(srcJet, chargeUnweighted.begin(), chargeUnweighted.end());
+  //fillerChargeUnweighted.fill();
+  //iEvent.put(std::move(chargeUnweightedV), "chargeUnweighted");
+//
+  //std::unique_ptr<edm::ValueMap<float>> chargeK1V(new edm::ValueMap<float>());
+  //edm::ValueMap<float>::Filler fillerChargeK1(*chargeK1V);
+  //fillerChargeK1.insert(srcJet, chargeK1.begin(), chargeK1.end());
+  //fillerChargeK1.fill();
+  //iEvent.put(std::move(chargeK1V), "chargeK1");
+//
+  //std::unique_ptr<edm::ValueMap<float>> chargep1V(new edm::ValueMap<float>());
+  //edm::ValueMap<float>::Filler fillerChargep1(*chargep1V);
+  //fillerChargep1.insert(srcJet, chargeKp1.begin(), chargeKp1.end());
+  //fillerChargep1.fill();
+  //iEvent.put(std::move(chargep1V), "chargeKp1");
+//
+  //std::unique_ptr<edm::ValueMap<float>> chargep3V(new edm::ValueMap<float>());
+  //edm::ValueMap<float>::Filler fillerChargep3(*chargep3V);
+  //fillerChargep3.insert(srcJet, chargeKp3.begin(), chargeKp3.end());
+  //fillerChargep3.fill();
+  //iEvent.put(std::move(chargep3V), "chargeKp3");
+//
+  //std::unique_ptr<edm::ValueMap<float>> chargep5V(new edm::ValueMap<float>());
+  //edm::ValueMap<float>::Filler fillerChargep5(*chargep5V);
+  //fillerChargep5.insert(srcJet, chargeKp5.begin(), chargeKp5.end());
+  //fillerChargep5.fill();
+  //iEvent.put(std::move(chargep5V), "chargeKp5");
+//
+  //std::unique_ptr<edm::ValueMap<float>> chargep7V(new edm::ValueMap<float>());
+  //edm::ValueMap<float>::Filler fillerChargep7(*chargep7V);
+  //fillerChargep7.insert(srcJet, chargeKp7.begin(), chargeKp7.end());
+  //fillerChargep7.fill();
+  //iEvent.put(std::move(chargep7V), "chargeKp7");
+
 
   std::unique_ptr<edm::ValueMap<float>> leptonPtRatioV(new edm::ValueMap<float>());
   edm::ValueMap<float>::Filler fillerRatio(*leptonPtRatioV);

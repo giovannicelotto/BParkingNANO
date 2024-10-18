@@ -23,6 +23,23 @@
 <use name="CondFormats/DataRecord"/>
 <use name="fastjet"/>
 <use name="fastjet-contrib"/>
+<use name="FWCore/PluginManager"/>
+<use name="DataFormats/Common"/>
+<use name="DataFormats/METReco"/>
+<use name="DataFormats/VertexReco"/>
+<use name="DataFormats/Math"/>
+<use name="DataFormats/BTauReco"/>
+<use name="SimDataFormats/GeneratorProducts"/>
+<use name="SimDataFormats/PileupSummaryInfo"/>
+<use name="CommonTools/UtilAlgos"/>
+<use name="HLTrigger/HLTcore"/>
+<use name="RecoBTag/FeatureTools"/>
+<use name="TrackingTools/Records"/>
+<use name="GeneratorInterface/Pythia8Interface"/>
+<use name="GeneratorInterface/ExternalDecays"/>
+<use name="hepmc"/>
+<use name="pythia8"/>
+<use name="boost"/>
 <library file="*.cc" name="PhysicsToolsNanoAODPlugins">
   <flags EDM_PLUGIN="1"/>
 </library>
