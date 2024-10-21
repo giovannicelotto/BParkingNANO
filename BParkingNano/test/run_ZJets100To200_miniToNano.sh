@@ -24,8 +24,9 @@ for FILE in "$DIRECTORY"/*; do
         
         #echo "$FILE"
         BASENAME=$(basename "$FILE")
-        NUMBER=$(echo "$BASENAME" | awk -F'MINI_|\\.root' '{print $2}')
+        NUMBER=$(echo "$BASENAME" | awk -F'_|\\.root' '{print $2}')
         echo "Extracted number: $NUMBER"
+        echo "File $FILE"
         
         if [ -f "/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/ZJets2024Oct18/ZJetsToQQ_HT-100to200/ZJetsToQQ_100to200_"$NUMBER".root" ]; then
             echo "File exists: $FILE"
@@ -38,6 +39,7 @@ for FILE in "$DIRECTORY"/*; do
             #    break
             #fi
             MOD_RESULT=$((NUMBER % 25))
+            echo "OutNumber : $NUMBER"
             sbatch -J "ZJets_$MOD_RESULT" /t3home/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/nano_job_ZJets100To200.sh "root://t3dcachedb.psi.ch:1094//$FILE" "$NUMBER" 
         fi
         

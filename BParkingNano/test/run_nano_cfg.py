@@ -63,21 +63,22 @@ ext2 = {False:'data', True:'mc'}
 
 if options.outNumber!=-1:
     print("You are here")
-    #print('/scratch/'+'_'.join(['GluGluSpin0_M'+str(options.massHypo),
-    print('/scratch/'+'_'.join(['ZJetsToQQ_HT-100to200',
-                                                ext1[options.lhcRun],
-                                                ext2[options.isMC],
-                                                options.tag,
-                                                options.outNumber])+'.root')
-    #outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['GluGluSpin0_M'+str(options.massHypo),
-    outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['ZJetsToQQ_HT-100to200',
+    print("Your outNumber is ", str(options.outNumber))
+
+    #print('/scratch/'+'_'.join(['ZJetsToQQ_HT-100to200',
+    #                                            ext1[options.lhcRun],
+    #                                            ext2[options.isMC],
+    #                                            options.tag,
+    #                                            options.outNumber])+'.root')
+    outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['GluGluSpin0_M'+str(options.massHypo),
+    #outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['ZJetsToQQ_HT-100to200',
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag,
                                                 options.outNumber])+'.root')
 
 else:
-    outputFileNANO = cms.untracked.string('_'.join(['ttbar',
+    outputFileNANO = cms.untracked.string('_'.join(['GluGluHToBB',
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag])+'.root')

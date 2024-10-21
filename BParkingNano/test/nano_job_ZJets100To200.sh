@@ -15,7 +15,7 @@ cmsenv
 # Run the CMS analysis script
 cmsRun /t3home/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/run_nano_cfg.py inputFiles="$1" outNumber="$2" maxEvents=-1
 
-file_path="/scratch/ZJetsToQQ_100to200_${2}.root"
+file_path="/scratch/ZJetsToQQ_HT-100to200_Run2_mc_124X_${2}.root"
 
 # Check if the file size is larger than 2 MB (2*1024*1024 bytes)
 #if [ $(stat -c%s "$file_path") -gt 1024 ]; then

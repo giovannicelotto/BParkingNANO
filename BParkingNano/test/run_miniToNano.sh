@@ -57,6 +57,7 @@ for FILE in "$DIRECTORY"/*; do
         BASENAME=$(basename "$FILE")
         NUMBER=$(echo "$BASENAME" | awk -F'MINI_|\\.root' '{print $2}')
         echo "Extracted number: $NUMBER"
+        echo "File $FILE"
         
         if [ -f "/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/GluGluSpin0_M"$mHypo"/GluGluSpin0_M"$mHypo"_"$NUMBER".root" ]; then
             echo "File exists: $FILE"
@@ -70,6 +71,7 @@ for FILE in "$DIRECTORY"/*; do
             #fi
             MOD_RESULT=$((NUMBER % 25))
             sbatch -J "ggH_M"$mHypo"_$MOD_RESULT" /t3home/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/nano_job.sh "root://t3dcachedb.psi.ch:1094//$FILE" "$NUMBER" "$mHypo"
+            break
         fi
         
         
