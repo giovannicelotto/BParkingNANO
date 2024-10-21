@@ -33,6 +33,9 @@ samples:
   #ZJetsToQQ800toInf:
   #  dataset: /ZJetsToQQ_HT-800toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
   #  isMC: True
+  #EWKZ2Jets_ZToQQ:
+  #  dataset: /EWKZ2Jets_ZToQQ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+  #  isMC: True
   #WJetsToLNu:
   #  dataset: /WJetsToLNu_012JetsNLO_34JetsLO_EWNLOcorr_13TeV-sherpa/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v4/MINIAODSIM
   #  isMC: True
@@ -47,9 +50,6 @@ samples:
   #  isMC: True
   #WJetsToQQ800toInf:
   #  dataset: /WJetsToQQ_HT-800toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-  #  isMC: True
-  #EWKZ2Jets_ZToQQ:
-  #  dataset: /EWKZ2Jets_ZToQQ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
   #  isMC: True
 
 
