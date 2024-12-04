@@ -9,9 +9,9 @@ common:
     globaltag: 106X_upgrade2018_realistic_v16
 
 samples:
-  GluGluHToBB:
-    dataset: /GluGluHToBB_M-125_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-    isMC: True
+  #GluGluHToBB:
+  #  dataset: /GluGluHToBB_M-125_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+  #  isMC: True
   #GluGluHToBBMINLO:
   #  dataset: /GluGluHToBB_M-125_TuneCP5_MINLO_NNLOPS_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
   #  isMC: True
@@ -142,7 +142,7 @@ samples:
   #    - 5
   #    - 6
   #data_Run2018B_part%d:
-  #  dataset: /ParkingBPH%d/Run2018B-05May2019-v2/MINIAOD 
+  #  dataset: /ParkingBPH1/Run2018B-UL2018_MiniAODv2-v1/MINIAOD
   #  isMC: False
   #  parts: 
   #    - 1
@@ -152,7 +152,7 @@ samples:
   #    - 5
   #    - 6
   #data_Run2018C_part%d: 
-  #  dataset: /ParkingBPH%d/Run2018C-05May2019-v1/MINIAOD 
+  #  dataset: /ParkingBPH1/Run2018C-UL2018_MiniAODv2-v1/MINIAOD
   #  isMC: False
   #  parts: 
   #    - 1
@@ -161,12 +161,11 @@ samples:
   #    - 4
   #    - 5
   #    - 6
-  #data_Run2018D_part%d:
-  #  dataset: /ParkingBPH%d/Run2018D-05May2019promptD-v1/MINIAOD
-  #  isMC: False
-  #  globaltag: 102X_dataRun2_Prompt_v14
-  #  parts:
-  #    - 1
+  data_Run2018D_part%d:
+    dataset: /ParkingBPH%d/Run2018D-UL2018_MiniAODv2-v1/MINIAOD
+    isMC: False
+    parts:
+      - 1
   #    - 2
   #    - 3
   #    - 4
