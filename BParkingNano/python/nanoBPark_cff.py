@@ -58,7 +58,7 @@ nanoSequenceCommon = cms.Sequence(nanoMetadata +
                              )
 nanoSequence = cms.Sequence(nanoSequenceCommon + nanoSequenceOnlyFullSim)
 
-nanoSequenceMC = cms.Sequence(particleLevelBParkSequence + genWeightsTable+
+nanoSequenceMC = cms.Sequence(particleLevelBParkSequence + genWeightsTableSequence+
                                 genParticleBParkSequence + nanoSequenceCommon + jetMC +
                               globalTablesMC  + genParticleBParkTables + lheInfoTable
                               )
@@ -79,11 +79,11 @@ def nanoAOD_customizeMuonTriggerBPark(process):
     return process
 
 def nanoAOD_customizeTrackFilteredBPark(process):
-    process.nanoTracksSequence = cms.Sequence( tracksBParkSequence + tracksBParkTables)
+    process.nanoSequence = cms.Sequence(process.nanoSequence+ tracksBParkSequence + tracksBParkTables)
     return process
 
 def nanoAOD_customizeElectronFilteredBPark(process):
-    #process.nanoBKeeSequence     = cms.Sequence( electronsBParkSequence + electronBParkTables)
+    process.nanoSequence     = cms.Sequence(process.nanoSequence+ electronsBParkSequence + electronBParkTables)
     #process.nanoBKstarEESequence = cms.Sequence( electronsBParkSequence + electronBParkTables)
     return process
 
