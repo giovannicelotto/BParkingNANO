@@ -47,6 +47,8 @@ namespace {
       num++;
       sumw += w;
       sumw2 += (w * w);
+      //std::cout << "Weight added: " << w << ", Updated sumw: " << sumw << std::endl;
+
     }
 
     void incPSOnly(double w0, const std::vector<double>& wPS) {
@@ -550,12 +552,12 @@ public:
 
     // getByToken throws since we're not in the endRun (see https://github.com/cms-sw/cmssw/pull/18499)
     //if (iRun.getByToken(lheRunTag_, lheInfo)) {
-    //for (const auto& lheLabel : lheLabel_) {
-    //  iRun.getByLabel(lheLabel, lheInfo);
-    //  if (lheInfo.isValid()) {
-    //    break;
-    //  }
-    //}
+    for (const auto& lheLabel : lheLabel_) {
+      iRun.getByLabel(lheLabel, lheInfo);
+      if (lheInfo.isValid()) {
+        break;
+      }
+    }
     if (lheInfo.isValid()) {
       std::vector<ScaleVarWeight> scaleVariationIDs;
       std::vector<PDFSetWeights> pdfSetWeightIDs;
@@ -1077,7 +1079,13 @@ public:
                            edm::EventSetup const&,
                            CounterMap* runCounterMap) const override {
     runCounterMap->merge(streamCache(id)->countermap);
-  }
+    //debug19/01/25
+    std::cout << "Merged countermap at stream level:" << std::endl;
+    for (const auto& x : runCounterMap->countermap) {
+        std::cout << "Label: " << x.first << ", Sumw: " << x.second.sumw << std::endl;
+    }
+}
+  
   // nothing to do per se
   void globalEndRunSummary(edm::Run const&, edm::EventSetup const&, CounterMap* runCounterMap) const override {}
   // write the total to the run
@@ -1087,10 +1095,9 @@ public:
     //std::cout<<runCounterMap->countermap<<std::endl;
     for (const auto& x : runCounterMap->countermap) {
       auto runCounter = &(x.second);
-      std::cout<<"SumW "<<runCounter->sumw<<std::endl;
       std::string label = (!x.first.empty()) ? (std::string("_") + x.first) : "";
       std::string doclabel = (!x.first.empty()) ? (std::string(", for model label ") + x.first) : "";
-
+      //std::cout<< "SumW added with value " << runCounter->sumw << std::endl;
       out->addInt("genEventCount" + label, "event count" + doclabel, runCounter->num);
       out->addFloat("genEventSumw" + label, "sum of gen weights" + doclabel, runCounter->sumw);
       out->addFloat("genEventSumw2" + label, "sum of gen (weight^2)" + doclabel, runCounter->sumw2);
@@ -1136,6 +1143,8 @@ public:
         }
       }
     }
+    // debug19/01/25
+    std::cout << "Producing final NanoAOD counter table..." << std::endl;
     iRun.put(std::move(out));
     //std::cout<<"\n\n\n**iRun.put(std::move(out));***\n\n\n"<<std::endl;
   }
