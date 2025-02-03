@@ -22,7 +22,7 @@ options.register('wantFullRECO', False,
     VarParsing.varType.bool,
     "Run this on real data"
 )
-options.register('reportEvery', 10,
+options.register('reportEvery', 1000,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
     "report every N events"
@@ -48,7 +48,7 @@ options.register('massHypo', -1,
     VarParsing.varType.string,
     "mass of the Spin 0 particle"
 )
-options.setDefault('maxEvents', 10000)
+options.setDefault('maxEvents', 1000)
 options.setDefault('tag', '124X')
 options.parseArguments()
 print(options)
@@ -70,15 +70,22 @@ if options.outNumber!=-1:
     #                                            ext2[options.isMC],
     #                                            options.tag,
     #                                            options.outNumber])+'.root')
-    outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['GluGluSpin0_M'+str(options.massHypo),
-    #outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['ZJetsToQQ_HT-100to200',
+    if str(options.massHypo)!="-1":
+        outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['GluGluSpin0_M'+str(options.massHypo),
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag,
                                                 options.outNumber])+'.root')
+    else:
+        outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['ZJetsToQQ_HT100to200',
+                                                ext1[options.lhcRun],
+                                                ext2[options.isMC],
+                                                options.tag,
+                                                options.outNumber])+'.root')
+        print(outputFileNANO)
 
 else:
-    outputFileNANO = cms.untracked.string('_'.join(['GluGluHToBB',
+    outputFileNANO = cms.untracked.string('_'.join(['QCDMuEnriched',
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag])+'.root')
@@ -90,7 +97,8 @@ if not options.inputFiles:
     if options.lhcRun == 2:
         options.inputFiles = [
 #'/store/mc/RunIISummer20UL18MiniAODv2/QCD_HT100to200_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/2520000/002F46B9-4287-194A-BA9B-469CFB34D146.root'
-'/store/mc/RunIISummer20UL18MiniAODv2/GluGluHToBB_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/100000/009776A3-959E-E544-AD66-211B0904441B.root',
+#'/store/mc/RunIISummer20UL18MiniAODv2/GluGluHToBB_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/100000/009776A3-959E-E544-AD66-211B0904441B.root',
+'file:/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/miniAODZJets/ZJetsToQQ_HT100to200/RunIISummer20UL18/allFiles/ZJets_1555.root'
 ] if options.isMC else [
         '/store/data/Run2018A/ParkingBPH1/MINIAOD/UL2018_MiniAODv2-v1/2430000/004BEEAD-CCCD-4A4F-9217-91A5A28EA0C8.root'
         ]
@@ -168,10 +176,13 @@ process.NANOAODoutput = cms.OutputModule("NanoAODOutputModule",
     ),
     fileName = outputFileNANO,
     outputCommands = cms.untracked.vstring(
-      'drop *',
-      "keep nanoaodFlatTable_*Table*_*_*",     # event data
-      "keep nanoaodUniqueString_nanoMetadata_*_*",   # basic metadata
-    )
+    'drop *',  # Drop everything by default
+    "keep nanoaodFlatTable_*Table*_*_*",  # Keep event-level FlatTables
+    "keep nanoaodUniqueString_nanoMetadata_*_*",  # Keep basic metadata
+    "keep nanoaodMergeableCounterTable_*_*_*",
+    #"keep TTree_Runs_*_*"
+
+)
 
 )
 
@@ -186,10 +197,8 @@ from PhysicsTools.BParkingNano.nanoBPark_cff import *
 if options.lhcRun == 2:
     process = nanoAOD_customizeMuonTriggerBPark(process)
     process = nanoAOD_customizeElectronFilteredBPark(process)
-    process = nanoAOD_customizeTrackFilteredBPark(process)
-    #process = nanoAOD_customizeBToKLL(process)
-    #process = nanoAOD_customizeBToKstarEE(process)
-    #process = nanoAOD_customizeBToKstarMuMu(process)
+    #process = nanoAOD_customizeTrackFilteredBPark(process)
+
 elif options.lhcRun == 3:
     from PhysicsTools.BParkingNano.electronsTrigger_cff import *
     process = nanoAOD_customizeDiEle(process)
@@ -217,6 +226,7 @@ elif options.lhcRun == 3:
 if options.isMC:
     from PhysicsTools.BParkingNano.nanoBPark_cff import nanoAOD_customizeMC
     nanoAOD_customizeMC(process)
+    print("Here")
 
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.FEVTDEBUGHLToutput_step = cms.EndPath(process.FEVTDEBUGHLToutput)
@@ -264,9 +274,6 @@ elif options.lhcRun == 2:
     process.NANOAODoutput.SelectEvents = cms.untracked.PSet(
         SelectEvents = cms.vstring(
             'nanoAOD_Jets_step',
-            #'nanoAOD_Kee_step',
-            #'nanoAOD_KstarMuMu_step',
-            #'nanoAOD_KstarEE_step',
         )
     )
 
