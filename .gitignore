@@ -20,4 +20,4 @@ __init__.py
 #*#
 *.hdf
 */#*.*#
-production/mc/crab*
+BParkingNano/production/*/crab*
