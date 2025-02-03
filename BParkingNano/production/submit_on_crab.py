@@ -1,4 +1,4 @@
-from CRABClient.UserUtilities import config, ClientException, getUsernameFromCRIC
+from CRABClient.UserUtilities import config, ClientException
 import yaml
 import datetime
 from fnmatch import fnmatch
@@ -10,22 +10,24 @@ config = config()
 config.section_('General')
 config.General.transferOutputs = True
 config.General.transferLogs = True
-config.General.workArea = 'BParkingNANO_{:s}'.format(production_tag)
+config.General.workArea = 'QCDMuEnriched{:s}'.format(production_tag)
 
 config.section_('Data')
 config.Data.publication = False
-config.Data.outLFNDirBase = '/store/group/phys_bphys/DiElectronX/production/samples/{:s}'.format(config.General.workArea)
+config.Data.outLFNDirBase = '/store/user/gcelotto/bb_ntuples/nanoaod_ggH/{:s}'.format(config.General.workArea)
 config.Data.inputDBS = 'global'
+config.Data.allowNonValidInputDataset = True 
 
 config.section_('JobType')
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '../test/run_nano_cfg.py'
-config.JobType.maxJobRuntimeMin = 3000
+config.JobType.maxJobRuntimeMin = 2750
 config.JobType.allowUndistributedCMSSW = True
 
 config.section_('User')
 config.section_('Site')
-config.Site.storageSite = 'T2_CH_CERN'
+config.Site.storageSite = 'T3_CH_PSI'
+#config.Site.whitelist = ['T2_US_MIT']
 
 if __name__ == '__main__':
 
@@ -43,9 +45,9 @@ if __name__ == '__main__':
           print("Failed submitting task:",cle)
 
   parser = ArgumentParser()
-  parser.add_argument('-y', '--yaml', default = 'samples_Run3.yml', help = 'File with dataset descriptions')
+  parser.add_argument('-y', '--yaml', default = 'samples.yml', help = 'File with dataset descriptions')
   parser.add_argument('-f', '--filter', default='*', help = 'filter samples, POSIX regular expressions allowed')
-  parser.add_argument('-r', '--lhcRun', type=int, default=3, help = 'Run 2 or 3 (default)')
+  parser.add_argument('-r', '--lhcRun', type=int, default=2, help = 'Run 2 or 3 (default)')
   args = parser.parse_args()
 
   with open(args.yaml) as f:
@@ -101,7 +103,7 @@ if __name__ == '__main__':
             'lhcRun={:.0f}'.format(args.lhcRun),
         ]
 
-        config.JobType.outputFiles = ['_'.join(['BParkingNANO', 'Run3' if args.lhcRun==3 else 'Run2', 'mc' if isMC else 'data', production_tag])+'.root']
+        config.JobType.outputFiles = ['_'.join(['QCDMuEnriched', 'Run3' if args.lhcRun==3 else 'Run2', 'mc' if isMC else 'data', production_tag])+'.root']
 
         print()
         print(config)
