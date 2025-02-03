@@ -28,7 +28,7 @@ for FILE in "$DIRECTORY"/*; do
         echo "Extracted number: $NUMBER"
         echo "File $FILE"
         
-        if [ -f "/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/ZJets2024Oct18/ZJetsToQQ_HT-100to200/ZJetsToQQ_100to200_"$NUMBER".root" ]; then
+        if [ -f "/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/allSamples2024Dec20/ZJetsToQQ_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/ZJetsToQQ_HT100to200_Run2_mc_124X_"$NUMBER".root" ]; then
             echo "File exists: $FILE"
         else
             #if [ $count -lt 10 ]; then
