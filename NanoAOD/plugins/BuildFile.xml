@@ -37,9 +37,11 @@
 <use name="TrackingTools/Records"/>
 <use name="GeneratorInterface/Pythia8Interface"/>
 <use name="GeneratorInterface/ExternalDecays"/>
+<use name="RecoBTag/ONNXRuntime"/>
 <use name="hepmc"/>
 <use name="pythia8"/>
 <use name="boost"/>
+<use name="correctionlib"/>
 <library file="*.cc" name="PhysicsToolsNanoAODPlugins">
   <flags EDM_PLUGIN="1"/>
 </library>
