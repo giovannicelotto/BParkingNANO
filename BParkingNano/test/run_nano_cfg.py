@@ -85,7 +85,7 @@ if options.outNumber!=-1:
         print(outputFileNANO)
 
 else:
-    outputFileNANO = cms.untracked.string('_'.join(['QCDMuEnriched',
+    outputFileNANO = cms.untracked.string('_'.join(['ZJetsToQQ_noTrig',
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag])+'.root')
@@ -97,8 +97,8 @@ if not options.inputFiles:
     if options.lhcRun == 2:
         options.inputFiles = [
 #'/store/mc/RunIISummer20UL18MiniAODv2/QCD_HT100to200_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/2520000/002F46B9-4287-194A-BA9B-469CFB34D146.root'
-#'/store/mc/RunIISummer20UL18MiniAODv2/GluGluHToBB_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/100000/009776A3-959E-E544-AD66-211B0904441B.root',
-'file:/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/miniAODZJets/ZJetsToQQ_HT100to200/RunIISummer20UL18/allFiles/ZJets_1555.root'
+#'/store/mc/RunIISummer20UL18MiniAODv2/ZToMuMu_M-50To120_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/270000/08E9309F-52F4-C74A-B740-06BD4A21A61E.root',
+'file:/t3home/gcelotto/moreMC/mini.root'
 ] if options.isMC else [
         '/store/data/Run2018A/ParkingBPH1/MINIAOD/UL2018_MiniAODv2-v1/2430000/004BEEAD-CCCD-4A4F-9217-91A5A28EA0C8.root'
         ]

@@ -10,7 +10,7 @@ config = config()
 config.section_('General')
 config.General.transferOutputs = True
 config.General.transferLogs = True
-config.General.workArea = 'QCDMuEnriched{:s}'.format(production_tag)
+config.General.workArea = 'ZJetsToQQ_noTrig{:s}'.format(production_tag)
 
 config.section_('Data')
 config.Data.publication = False
@@ -103,7 +103,7 @@ if __name__ == '__main__':
             'lhcRun={:.0f}'.format(args.lhcRun),
         ]
 
-        config.JobType.outputFiles = ['_'.join(['QCDMuEnriched', 'Run3' if args.lhcRun==3 else 'Run2', 'mc' if isMC else 'data', production_tag])+'.root']
+        config.JobType.outputFiles = ['_'.join(['ZJetsToQQ_noTrig', 'Run3' if args.lhcRun==3 else 'Run2', 'mc' if isMC else 'data', production_tag])+'.root']
 
         print()
         print(config)

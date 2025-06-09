@@ -20,7 +20,7 @@ if [ -z "$BASE_DIR" ]; then
 fi
 
 # Find all directories recursively and execute `crab resubmit` on them
-find "$BASE_DIR" -mindepth 2 -maxdepth 2 -type d | while read -r folder; do
+find "$BASE_DIR" -mindepth 1 -maxdepth 1 -type d | while read -r folder; do
   echo "Executing: crab resubmit $folder"
   crab resubmit "$folder"
 done

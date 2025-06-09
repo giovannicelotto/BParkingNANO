@@ -1,9 +1,7 @@
 #!/bin/bash
-
-
 DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/miniAODZJets/ZJetsToQQ_HT100to200/RunIISummer20UL18/allFiles"
 
-cmsbase="/t3home/gcelotto/CMSSW_12_4_8/src"
+cmsbase="/work/gcelotto/CMSSW_12_4_8/src"
 
 # Define the path to the run_nano.py script
 SCRIPT_PATH="$cmsbase/PhysicsTools/BParkingNano/test/run_nano_cfg.py"
@@ -28,7 +26,7 @@ for FILE in "$DIRECTORY"/*; do
         echo "Extracted number: $NUMBER"
         echo "File $FILE"
         
-        if [ -f "/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/allSamples2024Dec20/ZJetsToQQ_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/ZJetsToQQ_HT100to200_Run2_mc_124X_"$NUMBER".root" ]; then
+        if [ -f "/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/ZJetsToQQ_noTrig2025Jun03/ZJetsToQQ_HT-100to200/ZJetsToQQ_HT100to200_Run2_mc_124X_"$NUMBER".root" ]; then
             echo "File exists: $FILE"
         else
             #if [ $count -lt 10 ]; then
@@ -40,7 +38,7 @@ for FILE in "$DIRECTORY"/*; do
             #fi
             MOD_RESULT=$((NUMBER % 25))
             echo "OutNumber : $NUMBER"
-            sbatch -J "ZJets_$MOD_RESULT" /t3home/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/nano_job_ZJets100To200.sh "root://t3dcachedb.psi.ch:1094//$FILE" "$NUMBER" 
+            sbatch -J "ZJets_$MOD_RESULT" /work/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/nano_job_ZJets100To200.sh "root://t3dcachedb.psi.ch:1094//$FILE" "$NUMBER" 
         fi
         
         
