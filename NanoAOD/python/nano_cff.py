@@ -36,10 +36,10 @@ nanoMetadata = cms.EDProducer("UniqueStringProducer",
 )
 
 linkedObjects = cms.EDProducer("PATObjectCrossLinker",
-   jets=cms.InputTag("finalJetsPuppi"),
+   jets=cms.InputTag("finalJets"),
    muons=cms.InputTag("finalMuons"),
    electrons=cms.InputTag("finalElectrons"),
-   lowPtElectrons=cms.InputTag("finalLowPtElectrons"),
+   lowPtElectrons=cms.InputTag(""),
    taus=cms.InputTag("finalTaus"),
    photons=cms.InputTag("finalPhotons"),
 )

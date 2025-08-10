@@ -86,12 +86,12 @@ tightJetIdLepVeto = cms.EDProducer("PatJetIDValueMapProducer",
 )
 
 
-
-for modifier in run2_miniAOD_80XLegacy, run2_nanoAOD_94X2016:
-    print("Here running change of versions")
-    # check if running
-    modifier.toModify( tightJetId.filterParams, version = "WINTER16" )
-    modifier.toModify( tightJetIdLepVeto.filterParams, version = "WINTER16" )
+# Cancelled GC
+#for modifier in run2_miniAOD_80XLegacy, run2_nanoAOD_94X2016:
+#    print("Here running change of versions")
+#    # check if running
+#    modifier.toModify( tightJetId.filterParams, version = "WINTER16" )
+#    modifier.toModify( tightJetIdLepVeto.filterParams, version = "WINTER16" )
 
 
 # Updated Jets = JES corrected not JER
@@ -192,7 +192,6 @@ slimmedSmearedJetsUp = slimmedSmearedJets.clone(variation=cms.int32(1))
 
 finalJets = cms.EDFilter("PATJetRefSelector",
     src = cms.InputTag("slimmedSmearedJets"),
-    #src = cms.InputTag("slimmedJetsJESUpdated"),
     cut = cms.string("pt > 20 && abs(eta) < 2.5")
 )
 

@@ -22,7 +22,7 @@ options.register('wantFullRECO', False,
     VarParsing.varType.bool,
     "Run this on real data"
 )
-options.register('reportEvery', 1000,
+options.register('reportEvery', 100,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
     "report every N events"
@@ -39,16 +39,20 @@ options.register('lhcRun', 2,
 )
 options.register('outNumber', -1,
     VarParsing.multiplicity.singleton,
-    VarParsing.varType.string,
+    VarParsing.varType.int,
     "number of the outFile"
 )
-
-options.register('massHypo', -1,
+options.register('outputName', "",
     VarParsing.multiplicity.singleton,
     VarParsing.varType.string,
+    "output Name"
+)
+options.register('massHypo', -1,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.int,
     "mass of the Spin 0 particle"
 )
-options.setDefault('maxEvents', 1000)
+options.setDefault('maxEvents', 10000)
 options.setDefault('tag', '124X')
 options.parseArguments()
 print(options)
@@ -57,9 +61,13 @@ globaltag = None
 if   options.lhcRun == 3: globaltag = '124X_mcRun3_2022_realistic_v11' if options.isMC else '124X_dataRun3_Prompt_v4'
 elif options.lhcRun == 2: globaltag = '106X_upgrade2018_realistic_v16' if options.isMC else '106X_dataRun2_v35'
 if options._beenSet['globalTag']: globaltag = options.globalTag
-
 ext1 = {2:'Run2', 3:'Run3'}
 ext2 = {False:'data', True:'mc'}
+
+
+processName = "DataFiltered" if options.outputName=="" else options.outputName
+
+print(options.outputName=="")
 
 if options.outNumber!=-1:
     print("You are here")
@@ -71,24 +79,30 @@ if options.outNumber!=-1:
     #                                            options.tag,
     #                                            options.outNumber])+'.root')
     if str(options.massHypo)!="-1":
-        outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['GluGluSpin0_M'+str(options.massHypo),
+        outputFileNANO = cms.untracked.string('/scratch/'+'_'.join([processName+str(options.massHypo),
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag,
-                                                options.outNumber])+'.root')
+                                                str(options.outNumber)])+'.root')
     else:
-        outputFileNANO = cms.untracked.string('/scratch/'+'_'.join(['ZJetsToQQ_HT100to200',
+        #outputFileNANO = cms.untracked.string('/scratch/'+'_'.join([processName,
+        #                                        ext1[options.lhcRun],
+        #                                        ext2[options.isMC],
+        #                                        options.tag,
+        #                                        options.outNumber])+'.root')
+        outputFileNANO = cms.untracked.string('_'.join([processName,
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag,
-                                                options.outNumber])+'.root')
+                                                str(options.outNumber)])+'.root')
         print(outputFileNANO)
 
 else:
-    outputFileNANO = cms.untracked.string('_'.join(['ZJetsToQQ_noTrig',
+    outputFileNANO = cms.untracked.string('_'.join([processName,
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
                                                 options.tag])+'.root')
+
 outputFileFEVT = cms.untracked.string('_'.join(['BParkingFullEvt',
                                                 ext1[options.lhcRun],
                                                 ext2[options.isMC],
@@ -96,18 +110,13 @@ outputFileFEVT = cms.untracked.string('_'.join(['BParkingFullEvt',
 if not options.inputFiles:
     if options.lhcRun == 2:
         options.inputFiles = [
+'/store/mc/RunIISummer20UL18MiniAODv2/GluGluHToBB_M-125_TuneCP5_MINLO_NNLOPS_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/2810000/00F7273C-6F52-7D4E-8175-E86320D6068A.root'
 #'/store/mc/RunIISummer20UL18MiniAODv2/QCD_HT100to200_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/2520000/002F46B9-4287-194A-BA9B-469CFB34D146.root'
 #'/store/mc/RunIISummer20UL18MiniAODv2/ZToMuMu_M-50To120_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/270000/08E9309F-52F4-C74A-B740-06BD4A21A61E.root',
-'file:/t3home/gcelotto/moreMC/mini.root'
+#'file:/t3home/gcelotto/moreMC/mini.root'
 ] if options.isMC else [
-        '/store/data/Run2018A/ParkingBPH1/MINIAOD/UL2018_MiniAODv2-v1/2430000/004BEEAD-CCCD-4A4F-9217-91A5A28EA0C8.root'
-        ]
-    elif options.lhcRun == 3:
-        options.inputFiles = [
-            'root://cms-xrd-global.cern.ch//store/user/jodedra/BuTOjpsiKEE20221103FIFTYMminiaod/BuTOjpsiKEE20221103FIFTYM/SUMMER22_MINIAOD/221106_001759/0000/step1_inMINIAODSIM_1.root',
-        ] if options.isMC else [
-            'root://cms-xrd-global.cern.ch//store/data/Run2022C/ParkingDoubleElectronLowMass0/MINIAOD/PromptReco-v1/000/356/170/00000/45c0f2ed-eb5b-4292-abc8-3117424d9432.root'
-        ]
+'/store/data/Run2018A/ParkingBPH1/MINIAOD/UL2018_MiniAODv2-v1/2430000/004BEEAD-CCCD-4A4F-9217-91A5A28EA0C8.root'
+]
 annotation = '%s nevts:%d' % (outputFileNANO, options.maxEvents)
 
 # Process
@@ -194,93 +203,61 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, globaltag, '')
 
 from PhysicsTools.BParkingNano.nanoBPark_cff import *
-if options.lhcRun == 2:
-    process = nanoAOD_customizeMuonTriggerBPark(process)
-    process = nanoAOD_customizeElectronFilteredBPark(process)
-    #process = nanoAOD_customizeTrackFilteredBPark(process)
 
-elif options.lhcRun == 3:
-    from PhysicsTools.BParkingNano.electronsTrigger_cff import *
-    process = nanoAOD_customizeDiEle(process)
-    process = nanoAOD_customizeElectronFilteredBPark(process)
-    process = nanoAOD_customizeTriggerBitsBPark(process)
-    process = nanoAOD_customizeTrackFilteredBPark(process)
-    process = nanoAOD_customizeBToKLL(process)
+# Definition of the NanoSequence
+
+process = nanoAOD_customizeMuonTriggerBPark(process)
+process = nanoAOD_customizeElectronFilteredBPark(process)
+
+#process = nanoAOD_customizeTrackFilteredBPark(process)     #Tracks are removed
+
+
+
 
 # Path and EndPath definitions
-if options.lhcRun == 2:
-    process.nanoAOD_Jets_step = cms.Path(process.nanoSequence)
-    #process.nanoAOD_KMuMu_step = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.nanoBKMuMuSequence + CountBToKmumu )
-    #process.nanoAOD_Kee_step   = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.nanoBKeeSequence   + CountBToKee   )
-    #process.nanoAOD_KstarMuMu_step = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.KstarToKPiSequence + process.nanoBKstarMuMuSequence + CountBToKstarMuMu )
-    #process.nanoAOD_KstarEE_step  = cms.Path(process.nanoSequence + process.nanoTracksSequence + process.KstarToKPiSequence + process.nanoBKstarEESequence + CountBToKstarEE  )
-elif options.lhcRun == 3:
-    process.nanoAOD_DiEle_step = cms.Path(process.nanoSequence
-                                          #+process.nanoDiEleSequence
-                                          #+process.nanoTracksSequence
-                                          #+process.nanoBKeeSequence
-                                          #+CountBToKee
-                                          )
+process.nanoAOD_Jets_step = cms.Path(process.nanoSequence)
 
 # customisation of the process.
+# nanoAOD_customizeMC modifies the Path. It needs to be defined after nanoAOD_Jets_step
 if options.isMC:
     from PhysicsTools.BParkingNano.nanoBPark_cff import nanoAOD_customizeMC
     nanoAOD_customizeMC(process)
-    print("Here")
+
 
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.FEVTDEBUGHLToutput_step = cms.EndPath(process.FEVTDEBUGHLToutput)
 process.NANOAODoutput_step = cms.EndPath(process.NANOAODoutput)
 
-# Schedule definition
-if options.lhcRun == 3:
 
-    process.schedule = cms.Schedule(process.nanoAOD_DiEle_step,
-                                    process.endjob_step,
-                                    process.NANOAODoutput_step)
-    if options.wantFullRECO:
-        process.schedule = cms.Schedule(process.nanoAOD_DiEle_step,
-                                        process.endjob_step,
-                                        process.FEVTDEBUGHLToutput_step,
-                                        process.NANOAODoutput_step)
-    from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
-    associatePatAlgosToolsTask(process)
-    process.NANOAODoutput.SelectEvents = cms.untracked.PSet(
-        SelectEvents = cms.vstring('nanoAOD_DiEle_step')
-    )
 
-elif options.lhcRun == 2:
 
-    process.schedule = cms.Schedule(
-        process.nanoAOD_Jets_step,
-        #process.nanoAOD_Kee_step,
-        #process.nanoAOD_KstarMuMu_step,
-        #process.nanoAOD_KstarEE_step,
-        process.endjob_step,
-        process.NANOAODoutput_step
+
+process.schedule = cms.Schedule(
+    process.nanoAOD_Jets_step,
+    process.endjob_step,
+    process.NANOAODoutput_step
     )
-    if options.wantFullRECO:
-        process.schedule = cms.Schedule(
-            process.nanoAOD_KMuMu_step,
-            #process.nanoAOD_Kee_step,
-            #process.nanoAOD_KstarMuMu_step,
-            #process.nanoAOD_KstarEE_step,
-            process.endjob_step,
-            process.FEVTDEBUGHLToutput_step,
-            process.NANOAODoutput_step
-        )
-    from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
-    associatePatAlgosToolsTask(process)
-    process.NANOAODoutput.SelectEvents = cms.untracked.PSet(
-        SelectEvents = cms.vstring(
-            'nanoAOD_Jets_step',
-        )
+from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
+associatePatAlgosToolsTask(process)
+
+
+# Save only events that pass skimming
+process.NANOAODoutput.SelectEvents = cms.untracked.PSet(
+    SelectEvents = cms.vstring(
+        'nanoAOD_Jets_step',
     )
+)
 
 ### from https://hypernews.cern.ch/HyperNews/CMS/get/physics-validation/3287/1/1/1/1/1.html
-process.add_(cms.Service('InitRootHandlers', EnableIMT = cms.untracked.bool(False)))
-process.NANOAODoutput.fakeNameForCrab=cms.untracked.bool(True)
+process.add_(cms.Service('InitRootHandlers', EnableIMT = cms.untracked.bool(False)))        #Disable ROOT MultiThreading (can conflict with Crab)
+process.NANOAODoutput.fakeNameForCrab=cms.untracked.bool(True)                              # Used to trick CRAB into recognizing the output file even if it has a dynamic name or is created programmatically
 
 process.load("TrackingTools/TransientTrack/TransientTrackBuilder_cfi")
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)
+
+print("\n========= Schedule =========")
+print(process.schedule)
+print("============================\n")
+for name, path in process.paths.iteritems():
+    print("Name : %s\nPath : %s"%(name, path))

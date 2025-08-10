@@ -26,7 +26,7 @@ run2_miniAOD_80XLegacy.toModify(isoForMu, EAFile_MiniIso = "PhysicsTools/NanoAOD
 run2_nanoAOD_94X2016.toModify(isoForMu, EAFile_MiniIso = "PhysicsTools/NanoAOD/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt")
 
 ptRatioRelForMu = cms.EDProducer("MuonJetVarProducer",
-    srcJet = cms.InputTag("updatedJetsPuppi"),
+    srcJet = cms.InputTag("finalJets"),
     srcLep = cms.InputTag("slimmedMuonsUpdated"),
     srcVtx = cms.InputTag("offlineSlimmedPrimaryVertices"),
 )
@@ -88,9 +88,9 @@ run2_muon_2016.toModify(muonMVATTH,
     )
 
 muonTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
-    src = cms.InputTag("linkedObjects","muons"),
+    src = cms.InputTag("linkedObjectsCR","muons"),
     cut = cms.string(""), #we should not filter on cross linked collections
-    name = cms.string("Muon"),
+    name = cms.string("FinalMuon"),
     doc  = cms.string("slimmedMuons after basic selection (" + finalMuons.cut.value()+")"),
     singleton = cms.bool(False), # the number of entries is variable
     extension = cms.bool(False), # this is the main table for the muons
@@ -141,11 +141,11 @@ muonTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
         inTimeMuon = Var("passed('InTimeMuon')",bool,doc="inTimeMuon ID"),
         jetNDauCharged = Var("?userCand('jetForLepJetVar').isNonnull()?userFloat('jetNDauChargedMVASel'):0", "uint8", doc="number of charged daughters of the closest jet"),
         ),
-    externalVariables = cms.PSet(
-        mvaTTH = ExtVar(cms.InputTag("muonMVATTH"),float, doc="TTH MVA lepton ID score",precision=14),
-        mvaLowPt = ExtVar(cms.InputTag("muonMVALowPt"),float, doc="Low pt muon ID score",precision=14),
-        fsrPhotonIdx = ExtVar(cms.InputTag("leptonFSRphotons:muFsrIndex"),int, doc="Index of the lowest-dR/ET2 among associated FSR photons"),
-    ),
+    #externalVariables = cms.PSet(
+    #    mvaTTH = ExtVar(cms.InputTag("muonMVATTH"),float, doc="TTH MVA lepton ID score",precision=14),
+    #    mvaLowPt = ExtVar(cms.InputTag("muonMVALowPt"),float, doc="Low pt muon ID score",precision=14),
+    #    fsrPhotonIdx = ExtVar(cms.InputTag("leptonFSRphotons:muFsrIndex"),int, doc="Index of the lowest-dR/ET2 among associated FSR photons"),
+    #),
 )
 
 

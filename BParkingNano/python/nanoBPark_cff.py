@@ -11,6 +11,8 @@ from PhysicsTools.NanoAOD.taus_cff import *
 from PhysicsTools.NanoAOD.boostedTaus_cff import *
 #from PhysicsTools.NanoAOD.jetsAK4_CHS_cff import *
 from PhysicsTools.NanoAOD.jets_cff import *
+from PhysicsTools.NanoAOD.dijet_cff import dijetBuilder, dijetTable, dijetSequence, dijetPtFilter
+
 #from PhysicsTools.NanoAOD.jetsAK4_Puppi_cff import *
 #from PhysicsTools.NanoAOD.jetMC_cff import *
 from PhysicsTools.NanoAOD.muons_cff import *
@@ -26,8 +28,8 @@ from PhysicsTools.BParkingNano.electronsBPark_cff import *
 from PhysicsTools.BParkingNano.tracksBPark_cff import *
 
 ## B collections
-from PhysicsTools.BParkingNano.BToKLL_cff import *
-from PhysicsTools.BParkingNano.BToKstarLL_cff import *
+#from PhysicsTools.BParkingNano.BToKLL_cff import *
+#from PhysicsTools.BParkingNano.BToKstarLL_cff import *
 
 nanoMetadata = cms.EDProducer("UniqueStringProducer",
     strings = cms.PSet(
@@ -45,15 +47,27 @@ linkedObjectsNew = cms.EDProducer("PATObjectCrossLinker",
    vertices=cms.InputTag("slimmedSecondaryVertices")
 )
 
+#linkedObjectsCR = cms.EDProducer("PATObjectCrossLinker",
+#   jets=cms.InputTag("finalJets"),
+#   muons=cms.InputTag("finalMuons"),
+#   electrons=cms.InputTag("slimmedElectrons"),
+#   lowPtElectrons=cms.InputTag(""),
+#   taus=cms.InputTag("slimmedTaus"),
+#   boostedTaus=cms.InputTag(""),
+#   photons=cms.InputTag("slimmedPhotons"),
+#   vertices=cms.InputTag("slimmedSecondaryVertices")
+#)
+
 nanoSequenceOnlyFullSim = cms.Sequence(triggerObjectBParkTables + l1bits)
 
 nanoSequenceCommon = cms.Sequence(nanoMetadata +
-                                 muonBParkSequence + finalTaus +
+                                 muonBParkSequence + 
                                  jetSequence +                                          # dont know how to handle the muonsubptraw missing
                                  #cms.Sequence(jetTask) +
-                             vertexTables+
+                                    vertexTables+
                                  linkedObjectsNew +
-                                 jetTables
+                                 jetTables+
+                                 dijetSequence
                             #cms.Sequence(vertexTask) + 
                              )
 nanoSequence = cms.Sequence(nanoSequenceCommon + nanoSequenceOnlyFullSim)
@@ -64,18 +78,13 @@ nanoSequenceMC = cms.Sequence(particleLevelBParkSequence + genWeightsTableSequen
                               )
 
 
-from PhysicsTools.BParkingNano.electronsTrigger_cff import *
-def nanoAOD_customizeDiEle(process):
-    process.nanoDiEleSequence = cms.Sequence(
-        myUnpackedPatTrigger
-        +myTriggerMatches
-        +mySlimmedElectronsWithEmbeddedTrigger
-        +electronTrgSelector
-        +countTrgElectrons)
-    return process
+
 
 def nanoAOD_customizeMuonTriggerBPark(process):
-    process.nanoSequence = cms.Sequence( process.nanoSequence + muonBParkSequence + muonBParkTables)#+ muonTriggerMatchedTables)   ###comment in this extra table in case you want to create the TriggerMuon collection again.
+    process.nanoSequence = cms.Sequence( process.nanoSequence #+ muonBParkSequence 
+                                        + muonBParkTables
+                                        )# +
+                                        #slimmedMuonsUpdated+isoForMu+ptRatioRelForMu+slimmedMuonsWithUserData+ finalMuons + linkedObjectsCR+muonTable)#+ muonTriggerMatchedTables)   ###comment in this extra table in case you want to create the TriggerMuon collection again.
     return process
 
 def nanoAOD_customizeTrackFilteredBPark(process):
@@ -114,7 +123,7 @@ def nanoAOD_customizeMC(process):
     print("Called nanoADO_customizeMC")
     for name, path in process.paths.iteritems():
         print("Name : %s\nPath : %s"%(name, path))
-        # replace all the non-match embedded inputs with the matched ones
+        # replace all the non-match embedded inputs with the matched ones (are the same muons but with matching to genMuons)
         massSearchReplaceAnyInputTag(path, 'muonTrgSelector:SelectedMuons', 'selectedMuonsMCMatchEmbedded')
         #massSearchReplaceAnyInputTag(path, 'electronTrgSelector:SelectedElectrons', 'selectedElectronsMCMatchEmbedded') # Is this needed if the trigger is emulated ???
         massSearchReplaceAnyInputTag(path, 'electronsForAnalysis:SelectedElectrons', 'selectedElectronsMCMatchEmbedded')
@@ -122,8 +131,12 @@ def nanoAOD_customizeMC(process):
 
         # modify the path to include mc-specific info
         #print("This is nanoSequenceMC ", nanoSequenceMC)
+        path.remove(nanoSequenceCommon)
         path.insert(0, nanoSequenceMC)
+        # muonBParkMC = cms.Sequence(muonBParkSequence + muonsBParkMCMatchForTable + selectedMuonsMCMatchEmbedded + muonBParkMCTable)
+        # muonBparkMC includes also bpark sequence
         path.replace(process.muonBParkSequence, process.muonBParkMC)
         path.replace(process.electronsBParkSequence, process.electronBParkMC)
         path.replace(process.tracksBParkSequence, process.tracksBParkMC)
-        #print("New Path : %s"%path)
+
+        print("\n\nNew Path : %s"%path)

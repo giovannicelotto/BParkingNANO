@@ -13,7 +13,7 @@ cd /work/gcelotto/CMSSW_12_4_8/src
 cmsenv
 echo "Starting cmsRun"
 # Run the CMS analysis script
-cmsRun /work/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/run_nano_cfg.py inputFiles="$1" outNumber="$2" maxEvents=-1
+cmsRun /work/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/run_nano_cfg.py inputFiles="$1" outNumber="$2" maxEvents=-1 processName="ZJetsToQQ_HT100to200"
 
 file_path="/scratch/ZJetsToQQ_HT100to200_Run2_mc_124X_${2}.root"
 

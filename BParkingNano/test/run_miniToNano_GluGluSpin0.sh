@@ -9,19 +9,28 @@ mHypo="$1"
 # Assign the DIRECTORY based on mHypo
 case "$mHypo" in
     50)
-        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/ratramon/GluGluSpin0ToBBbar_W_1p0_M_50/RunIISummer20UL18_MINI_fullStat/240815_194329/0000"
+        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/pMINLO/GluGluSpin0ToBBbar_W_1p0_M_50_MuEnriched_TuneCP5_13TeV_pythia8_cfi/RunIISummer20UL18MiniAOD_PrivateMC/250626_110446/0000"
+        DIRECTORY_NANO="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/GluGluSpin0_private/M50"
         ;;
     70)
-        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/ratramon/GluGluSpin0ToBBbar_W_1p0_M_70/RunIISummer20UL18_MINI/240815_194311/0000"
+        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/pMINLO/GluGluSpin0ToBBbar_W_1p0_M_70_MuEnriched_TuneCP5_13TeV_pythia8_cfi/RunIISummer20UL18MiniAOD_PrivateMC/250626_110510/0000"
+        DIRECTORY_NANO="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/GluGluSpin0_private/M70"
         ;;
     100)
-        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/ratramon/GluGluSpin0ToBBbar_W_1p0_M_100/RunIISummer20UL18_MINI/240815_194320/0000"
+        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/pMINLO/GluGluSpin0ToBBbar_W_1p0_M_100_MuEnriched_TuneCP5_13TeV_pythia8_cfi/RunIISummer20UL18MiniAOD_PrivateMC/250626_110534/0000"
+        DIRECTORY_NANO="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/GluGluSpin0_private/M100"
+        ;;
+    125)
+        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/pMINLO/GluGluHToBB_M-125_TuneCP5_MINLO_NNLOPS_13TeV-powheg-pythia8/RunIISummer20UL18MiniAOD_PrivateMC/combined"
+        DIRECTORY_NANO="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/GluGluSpin0_private/M125"
         ;;
     200)
-        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/ratramon/GluGluSpin0ToBBbar_W_1p0_M_200/RunIISummer20UL18_MINI/240815_194329/0000"
+        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/pMINLO/GluGluSpin0ToBBbar_W_1p0_M_200_MuEnriched_TuneCP5_13TeV_pythia8_cfi/RunIISummer20UL18MiniAOD_PrivateMC/250626_110601/0000"
+        DIRECTORY_NANO="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/GluGluSpin0_private/M200"
         ;;
     300)
-        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/ratramon/GluGluSpin0ToBBbar_W_1p0_M_300/RunIISummer20UL18_MINI/240815_194338/0000"
+        DIRECTORY="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/pMINLO/GluGluSpin0ToBBbar_W_1p0_M_300_MuEnriched_TuneCP5_13TeV_pythia8_cfi/RunIISummer20UL18MiniAOD_PrivateMC/250626_110626/0000"
+        DIRECTORY_NANO="/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/GluGluSpin0_private/M300"
         ;;
     *)
         echo "Invalid mHypo value. Please choose from 50, 70, 100, 200, or 300."
@@ -39,7 +48,7 @@ cmsbase="/work/gcelotto/CMSSW_12_4_8/src"
 # Define the path to the run_nano.py script
 SCRIPT_PATH="$cmsbase/PhysicsTools/BParkingNano/test/run_nano_cfg.py"
 cd $cmsbase || { echo "Failed to change directory to $cmsbase"; exit 1; }
-cmsenv
+#cmsenv
 echo "CMS environment base: $CMSSW_BASE"
 
 # Verify the run_nano.py script exists
@@ -55,11 +64,12 @@ for FILE in "$DIRECTORY"/*; do
         
         #echo "$FILE"
         BASENAME=$(basename "$FILE")
-        NUMBER=$(echo "$BASENAME" | awk -F'MINI_|\\.root' '{print $2}')
+        #NUMBER=$(echo "$BASENAME" | awk -F"GluGluSpin0_M${mHypo}_mini_|\\.root" '{print $2}')
+        NUMBER=$(echo "$BASENAME" | awk -F"MINLO_Private_|\\.root" '{print $2}')
         echo "Extracted number: $NUMBER"
         echo "File $FILE"
         
-        if [ -f "/pnfs/psi.ch/cms/trivcat/store/user/gcelotto/bb_ntuples/nanoaod_ggH/MCfiducial_corrections2025Mar10/GluGluSpin0_M"$mHypo"/GluGluSpin0_M"$mHypo"_Run2_mc_124X_"$NUMBER".root" ]; then
+        if [ -f $DIRECTORY_NANO"/GluGluSpin0_M"$mHypo"_Run2_mc_124X_"$NUMBER".root" ]; then
             echo "File exists: $FILE"
         else
             #if [ $count -lt 10 ]; then
@@ -69,8 +79,10 @@ for FILE in "$DIRECTORY"/*; do
             #else
             #    break
             #fi
-            MOD_RESULT=$((NUMBER % 25))
-            sbatch -J "ggH_M"$mHypo"_$MOD_RESULT" /work/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/nano_job.sh "root://t3dcachedb.psi.ch:1094//$FILE" "$NUMBER" "$mHypo"
+            MOD_RESULT=$((NUMBER % 100))
+            sbatch -J "ggH_M"$mHypo"_$MOD_RESULT" /work/gcelotto/CMSSW_12_4_8/src/PhysicsTools/BParkingNano/test/nano_job_new.sh "root://t3dcachedb.psi.ch:1094//$FILE" "$NUMBER" "$mHypo"
+            #exit 1
+
         fi
         
         
@@ -78,5 +90,3 @@ for FILE in "$DIRECTORY"/*; do
 
     fi
 done
-
-

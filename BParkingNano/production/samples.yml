@@ -25,18 +25,18 @@ samples:
 #  ZJetsToQQ100to200:
 #    dataset: /pnfs/psi.ch/cms/trivcat/store/user/gcelotto/miniAODZJets/ZJetsToQQ_HT100to200/RunIISummer20UL18/240523_144055/0000
 #    isMC: True
-  ZJetsToQQ200to400:
-    dataset: /ZJetsToQQ_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-    isMC: True
-  ZJetsToQQ400to600:
-    dataset: /ZJetsToQQ_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-    isMC: True
-  ZJetsToQQ600to800:
-    dataset: /ZJetsToQQ_HT-600to800_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-    isMC: True
-  ZJetsToQQ800toInf:
-    dataset: /ZJetsToQQ_HT-800toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-    isMC: True
+#  ZJetsToQQ200to400:
+#    dataset: /ZJetsToQQ_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+#    isMC: True
+#  ZJetsToQQ400to600:
+#    dataset: /ZJetsToQQ_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+#    isMC: True
+#  ZJetsToQQ600to800:
+#    dataset: /ZJetsToQQ_HT-600to800_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+#    isMC: True
+#  ZJetsToQQ800toInf:
+#    dataset: /ZJetsToQQ_HT-800toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+#    isMC: True
 #  EWKZ2Jets_ZToQQ:
 #    dataset: /EWKZ2Jets_ZToQQ_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
 #    isMC: True
@@ -57,60 +57,72 @@ samples:
 #    isMC: True
 ###
 ###
-#  ST_s-channel_4f_hadronicDecays:
-#    dataset: /ST_s-channel_4f_hadronicDecays_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
-#  ST_s-channel_4f_leptonDecays:
-#    dataset: /ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
-#    isMC: True
-#  ST_t-channel_antitop:
-#    dataset: /ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
-#    isMC: True
-#  ST_t-channel_top:
-#    dataset: /ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
-#    isMC: True
-#  ST_tW_antitop:
-#    dataset: /ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
-#  ST_tW_top:
-#    dataset: /ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
+  #ST_s-channel_4f_hadronicDecays:
+  #  dataset: /ST_s-channel_4f_hadronicDecays_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+  #  isMC: True
+  #ST_s-channel_4f_leptonDecays:
+  #  dataset: /ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
+  #  isMC: True
+  #ST_t-channel_antitop:
+  #  dataset: /ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
+  #  isMC: True
+  #ST_t-channel_top:
+  #  dataset: /ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
+  #  isMC: True
+  #ST_tW_antitop:
+  #  dataset: /ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+  #  isMC: True
+  #ST_tW_top:
+  #  dataset: /ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+  #  isMC: True
 ##
-#  WW:
-#    dataset: /WW_TuneCP5_13TeV-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
-#    isMC: True
-#  WZ:
-#    dataset: /WZ_TuneCP5_13TeV-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
-#    isMC: True
-#  ZZ:
-#    dataset: /ZZ_TuneCP5_13TeV-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
+  #WW:
+  #  dataset: /WW_TuneCP5_13TeV-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
+  #  isMC: True
+  #WZ:
+  #  dataset: /WZ_TuneCP5_13TeV-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
+  #  isMC: True
+  #ZZ:
+  #  dataset: /ZZ_TuneCP5_13TeV-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+  #  isMC: True
 #    
 ### Splitting to 4
-#  TTTo2L2Nu:
-#    dataset: /TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
-#    isMC: True
-#  TTToHadronic:
-#    dataset: /TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
-#    isMC: True
-#  TTToSemiLeptonic:
-#    dataset: /TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
-#  GluGluSpin0_M50:
-#    dataset: /GluGluSpin0ToBBbar_W_1p0_M_50_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
-#  GluGluSpin0_M70:
-#    dataset: /GluGluSpin0ToBBbar_W_1p0_M_70_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
-#  GluGluSpin0_M100:
-#    dataset: /GluGluSpin0ToBBbar_W_1p0_M_100_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
-#  GluGluSpin0_M200:
-#    dataset: /GluGluSpin0ToBBbar_W_1p0_M_200_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
-#  GluGluSpin0_M300:
-#    dataset: /GluGluSpin0ToBBbar_W_1p0_M_300_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
-#    isMC: True
+  #TTTo2L2Nu:
+  #  dataset: /TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
+  #  isMC: True
+  #TTToHadronic:
+  #  dataset: /TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM
+  #  isMC: True
+  #TTToSemiLeptonic:
+  #  dataset: /TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+  #  isMC: True
+
+
+# Put ext1 to have the extension of 10M. Remove _ext1 to have the first production of 1 M 
+  #GluGluSpin0_M50:
+  #  dataset: /GluGluSpin0ToBBbar_W_1p0_M_50_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1_ext1-v2/MINIAODSIM
+  #  isMC: True
+  #GluGluSpin0_M70:
+  #  dataset: /GluGluSpin0ToBBbar_W_1p0_M_70_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1_ext1-v2/MINIAODSIM
+  #  isMC: True
+  #GluGluSpin0_M100:
+  #  dataset: /GluGluSpin0ToBBbar_W_1p0_M_100_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1_ext1-v2/MINIAODSIM
+  #  isMC: True
+  #GluGluSpin0_M200:
+  #  dataset: /GluGluSpin0ToBBbar_W_1p0_M_200_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1_ext1-v2/MINIAODSIM
+  #  isMC: True
+  #GluGluSpin0_M300:
+  #  dataset: /GluGluSpin0ToBBbar_W_1p0_M_300_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1_ext1-v2/MINIAODSIM
+  #  isMC: True
+  #GluGluSpin0_M500:
+  #  dataset: /GluGluSpin0ToBBbar_W_1p0_M_500_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1_ext1-v2/MINIAODSIM
+  #  isMC: True
+  #GluGluSpin0_M700:
+  #  dataset: /GluGluSpin0ToBBbar_W_1p0_M_700_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1_ext1-v2/MINIAODSIM
+  #  isMC: True
+  #GluGluSpin0_M700:
+  #  dataset: /GluGluSpin0ToBBbar_W_1p0_M_1000_MuEnriched_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1_ext1-v2/MINIAODSIM
+  #  isMC: True
 ##
 ##
 #  QCD_MuEnriched_Pt1000toInf:
@@ -152,45 +164,45 @@ samples:
   #DYJetsToLL:
   #    dataset: /DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
   #    isMC: True
-  #data_Run2018A_part%d:    
-  #  dataset: /ParkingBPH%d/Run2018A-UL2018_MiniAODv2-v1/MINIAOD
-  #  isMC: False
-  #  parts: 
-  #    - 1
-  #    - 2
-  #    - 3
-  #    - 4
-  #    - 5
-  #    - 6
-  #data_Run2018B_part%d:
-  #  dataset: /ParkingBPH%d/Run2018B-UL2018_MiniAODv2-v1/MINIAOD
-  #  isMC: False
-  #  parts: 
-  #    - 1
-  #    - 2
-  #    - 3
-  #    - 4
-  #    - 5
-  #    - 6
-  #data_Run2018C_part%d: 
-  #  dataset: /ParkingBPH%d/Run2018C-UL2018_MiniAODv2-v1/MINIAOD
-  #  isMC: False
-  #  parts: 
-  #    - 1
-  #    - 2
-  #    - 3
-  #    - 4
-  #    - 5
-  #    - 6
-  #data_Run2018D_part%d:
-  #  dataset: /ParkingBPH%d/Run2018D-UL2018_MiniAODv2-v1/MINIAOD
-  #  isMC: False
-  #  parts:
-  #    - 1
-  #    - 2
-  #    - 3
-  #    - 4
-  #    - 5
+  data_Run2018A_part%d:    
+    dataset: /ParkingBPH%d/Run2018A-UL2018_MiniAODv2-v1/MINIAOD
+    isMC: False
+    parts: 
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+  data_Run2018B_part%d:
+    dataset: /ParkingBPH%d/Run2018B-UL2018_MiniAODv2-v1/MINIAOD
+    isMC: False
+    parts: 
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+  data_Run2018C_part%d: 
+    dataset: /ParkingBPH%d/Run2018C-UL2018_MiniAODv2-v1/MINIAOD
+    isMC: False
+    parts: 
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+  data_Run2018D_part%d:
+    dataset: /ParkingBPH%d/Run2018D-UL2018_MiniAODv2-v1/MINIAOD
+    isMC: False
+    parts:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
   #
   #  MC
   # 
